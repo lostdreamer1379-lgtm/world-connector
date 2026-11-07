@@ -33,7 +33,7 @@ export default function SpatialWorldCard({ world, transform, isFocused, isEnteri
     <motion.button
       type="button"
       onClick={() => onSelect(index)}
-      className={`world-card absolute left-1/2 top-1/2 overflow-hidden rounded-[32px] border border-white/10 bg-neutral-900/50 shadow-[0_38px_100px_-34px_rgba(0,0,0,0.78)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${isFocused ? "world-card-focused" : "world-card-near"}`}
+      className={`world-card absolute left-1/2 top-1/2 overflow-hidden rounded-[32px] border border-white/10 shadow-[0_38px_100px_-34px_rgba(0,0,0,0.78)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${isFocused ? "world-card-focused" : "world-card-near"}`}
       style={{ zIndex, touchAction: "none", transformStyle: "preserve-3d", transformOrigin: "50% 50%", willChange: "transform, opacity" }}
       animate={{
         x: `calc(-50% + ${translateX}px)`,

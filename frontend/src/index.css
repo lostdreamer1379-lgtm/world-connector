@@ -16,7 +16,7 @@ body {
 }
 
 button, input, textarea, select { font: inherit; }
-.world-card { width: clamp(19rem, 25vw, 31rem); height: clamp(25rem, 52vh, 43rem); border-color: rgba(239,232,219,.13); background: var(--scene-surface, #171615) !important; box-shadow: 0 45px 110px -38px rgba(0,0,0,.82), 0 1px 0 rgba(255,255,255,.08) inset; transition: border-color .35s ease, box-shadow .35s ease, background-color .5s ease; }
+.world-card { width: clamp(19rem, 25vw, 31rem); height: clamp(25rem, 52vh, 43rem); border-color: rgba(239,232,219,.13); background-color: var(--scene-surface, #171615) !important; background-image: linear-gradient(145deg, color-mix(in srgb, var(--scene-surface, #171615) 92%, white), var(--scene-surface, #171615)); box-shadow: 0 45px 110px -38px rgba(0,0,0,.82), 0 1px 0 rgba(255,255,255,.08) inset; transition: border-color .35s ease, box-shadow .35s ease, background-color .5s ease, background-image .5s ease; }
 .world-card-focused { border-color: rgba(239,232,219,.23); box-shadow: 0 52px 130px -38px rgba(0,0,0,.88), 0 1px 0 rgba(255,255,255,.12) inset; }
 .world-card-near { border-color: rgba(239,232,219,.11); }
 .world-artwork { user-select: none; -webkit-user-drag: none; }

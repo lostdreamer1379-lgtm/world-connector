@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWorlds } from "../hooks/useWorlds";
 import { useViewportOrientation } from "../hooks/useViewportOrientation";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
@@ -43,6 +43,13 @@ export default function Home() {
   const [isEntering, setIsEntering] = useState(false);
   const [enteringIndex, setEnteringIndex] = useState<number | null>(null);
   const [theme, setTheme] = useState<AppTheme>(readSavedTheme);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--scene-bg", theme.background);
+    document.documentElement.style.setProperty("--scene-surface", theme.surface);
+    document.documentElement.style.setProperty("--scene-accent", theme.accent);
+    document.body.style.backgroundColor = theme.background;
+  }, [theme]);
 
   function enterWorld(worldIndex: number) {
     const world = worlds[worldIndex];

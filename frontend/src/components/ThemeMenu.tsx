@@ -27,6 +27,12 @@ export default function ThemeMenu({ onThemeChange }: { onThemeChange: (theme: Ap
   }
   function applyTheme() {
     try { localStorage.setItem(SELECTED_KEY, selected.id); } catch { /* storage may be unavailable */ }
+    // Apply at document level as well as through React so fixed layers and
+    // portal-like overlays always receive the theme immediately.
+    document.documentElement.style.setProperty("--scene-bg", selected.background);
+    document.documentElement.style.setProperty("--scene-surface", selected.surface);
+    document.documentElement.style.setProperty("--scene-accent", selected.accent);
+    document.body.style.backgroundColor = selected.background;
     onThemeChange(selected);
     setOpen(false);
   }

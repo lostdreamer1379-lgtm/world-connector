@@ -8,6 +8,7 @@ interface SpatialWorldCardProps {
   world: World;
   transform: CardTransform;
   isFocused: boolean;
+  isEntering: boolean;
   onSelect: (index: number) => void;
 }
 
@@ -22,7 +23,7 @@ interface SpatialWorldCardProps {
  * Motion additionally spring toward each new frame's target would
  * smooth already-smoothed motion and make it feel laggy.
  */
-export default function SpatialWorldCard({ world, transform, isFocused, onSelect }: SpatialWorldCardProps) {
+export default function SpatialWorldCard({ world, transform, isFocused, isEntering, onSelect }: SpatialWorldCardProps) {
   const { translateX, translateY, translateZ, rotateX, rotateY, scale, opacity, zIndex, index } = transform;
   const [artworkFailed, setArtworkFailed] = useState(false);
 
@@ -33,17 +34,17 @@ export default function SpatialWorldCard({ world, transform, isFocused, onSelect
       type="button"
       onClick={() => onSelect(index)}
       className={`world-card absolute left-1/2 top-1/2 overflow-hidden rounded-[32px] border border-white/10 bg-neutral-900/50 shadow-[0_38px_100px_-34px_rgba(0,0,0,0.78)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${isFocused ? "world-card-focused" : "world-card-near"}`}
-      style={{ zIndex, touchAction: "none", transformStyle: "preserve-3d" }}
+      style={{ zIndex, touchAction: "none", transformStyle: "preserve-3d", transformOrigin: "50% 50%", willChange: "transform, opacity" }}
       animate={{
         x: `calc(-50% + ${translateX}px)`,
         y: `calc(-50% + ${translateY}px)`,
-        z: translateZ,
+        z: isEntering ? 260 : translateZ,
         rotateX,
         rotateY,
-        scale,
-        opacity,
+        scale: isEntering ? 1.16 : scale,
+        opacity: isEntering ? 1 : opacity,
       }}
-      transition={{ duration: 0 }}
+      transition={isEntering ? { duration: 0.82, ease: [0.16, 1, 0.3, 1] } : { duration: 0 }}
       aria-current={isFocused}
       aria-label={world.description ? `${world.name} — ${world.description}` : world.name}
     >

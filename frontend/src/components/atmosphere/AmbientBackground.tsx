@@ -1,7 +1,9 @@
 import { World } from "../../types/world";
+import { AppTheme } from "../themes";
 
 interface AmbientBackgroundProps {
   focusedWorld?: World;
+  theme?: AppTheme;
 }
 
 const FALLBACK_ACCENT = "#3a3a3d";
@@ -11,11 +13,11 @@ const FALLBACK_ACCENT = "#3a3a3d";
  * take on a hint of the focused world's accentColor, but it must never
  * compete with the card artwork or flash between colors.
  */
-export default function AmbientBackground({ focusedWorld }: AmbientBackgroundProps) {
+export default function AmbientBackground({ focusedWorld, theme }: AmbientBackgroundProps) {
   const accent = focusedWorld?.accentColor ?? FALLBACK_ACCENT;
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#0b0b0c]">
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden transition-colors duration-700" style={{ backgroundColor: theme?.background ?? "#0b0b0c" }}>
       <div
         className="absolute left-1/2 top-[-30%] h-[140vmax] w-[140vmax] -translate-x-1/2 rounded-full opacity-[0.16] blur-3xl transition-colors duration-1000 ease-out"
         style={{ background: `radial-gradient(closest-side, ${accent}, transparent 70%)` }}

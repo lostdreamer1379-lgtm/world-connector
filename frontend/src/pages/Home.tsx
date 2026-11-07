@@ -11,6 +11,8 @@ import AmbientBackground from "../components/atmosphere/AmbientBackground";
 import SpatialStage from "../components/spatial/SpatialStage";
 import SpatialDock from "../components/spatial/SpatialDock";
 import InstallAppButton from "../components/InstallAppButton";
+import ThemeMenu, { readSavedTheme } from "../components/ThemeMenu";
+import { AppTheme } from "../components/themes";
 
 /**
  * PHASE 3: interaction physics.
@@ -39,23 +41,27 @@ export default function Home() {
   const roundedIndex = Math.max(0, Math.min(worlds.length - 1, Math.round(rotation.position)));
   const focusedWorld = worlds[roundedIndex];
   const [isEntering, setIsEntering] = useState(false);
+  const [enteringIndex, setEnteringIndex] = useState<number | null>(null);
+  const [theme, setTheme] = useState<AppTheme>(readSavedTheme);
 
   function enterWorld(worldIndex: number) {
     const world = worlds[worldIndex];
     if (!world || isEntering) return;
     rotation.goTo(worldIndex);
+    setEnteringIndex(worldIndex);
     setIsEntering(true);
     window.setTimeout(() => {
       if (world.openMode === "NEW_TAB") window.open(world.destinationUrl, "_blank", "noopener,noreferrer");
       else window.location.assign(world.destinationUrl);
       setIsEntering(false);
-    }, 420);
+      setEnteringIndex(null);
+    }, 900);
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
-      <AmbientBackground focusedWorld={focusedWorld} />
-      <InstallAppButton />
+    <div className="relative h-screen w-screen overflow-hidden" style={{ "--scene-bg": theme.background, "--scene-surface": theme.surface } as React.CSSProperties}>
+      <AmbientBackground focusedWorld={focusedWorld} theme={theme} />
+      <div className="top-controls"><button className="top-control-button" onClick={() => window.location.reload()} aria-label="Reload worlds" title="Reload"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4.9 9a7.5 7.5 0 0 1 12.6-2L20 12M4 17v-5h5m10.1 3a7.5 7.5 0 0 1-12.6 2L4 12"/></svg></button><ThemeMenu onThemeChange={setTheme} /><InstallAppButton compact /></div>
 
       {isLoading && (
         <div className="flex h-full items-center justify-center">
@@ -82,11 +88,11 @@ export default function Home() {
 
       {!isLoading && !error && worlds.length > 0 && (
         <>
-          <SpatialStage worlds={worlds} orientation={orientation} rotation={rotation} onEnter={enterWorld} />
+          <SpatialStage worlds={worlds} orientation={orientation} rotation={rotation} onEnter={enterWorld} enteringIndex={enteringIndex} />
           <SpatialDock worlds={worlds} focusedIndex={roundedIndex} onSelect={rotation.goTo} orientation={orientation} onPrev={() => rotation.step(-1)} onNext={() => rotation.step(1)} canNavigate={worlds.length > 1} />
         </>
       )}
-      {isEntering && <div className="pointer-events-none fixed inset-0 z-50 bg-[#0b0b0c]/75 opacity-100 backdrop-blur-md transition-opacity" aria-label="Entering world" />}
+      {isEntering && <div className="world-entry-overlay pointer-events-none fixed inset-0 z-50" aria-label="Entering world" />}
     </div>
   );
 }

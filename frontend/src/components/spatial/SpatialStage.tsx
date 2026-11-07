@@ -12,6 +12,7 @@ interface SpatialStageProps {
   orientation: Orientation;
   rotation: SpatialRotationApi;
   onEnter: (index: number) => void;
+  enteringIndex: number | null;
 }
 
 /**
@@ -21,7 +22,7 @@ interface SpatialStageProps {
  * keys — all driving the same continuous `rotation` engine, so there is
  * exactly one source of truth for where focus is.
  */
-export default function SpatialStage({ worlds, orientation, rotation, onEnter }: SpatialStageProps) {
+export default function SpatialStage({ worlds, orientation, rotation, onEnter, enteringIndex }: SpatialStageProps) {
   const layout = getLayoutConfig(orientation, window.innerWidth, window.innerHeight);
   const roundedIndex = Math.max(0, Math.min(worlds.length - 1, Math.round(rotation.position)));
 
@@ -60,6 +61,7 @@ export default function SpatialStage({ worlds, orientation, rotation, onEnter }:
           world={worlds[index]}
           transform={computeCardTransform(index, offset, layout)}
           isFocused={index === roundedIndex}
+          isEntering={index === enteringIndex}
           onSelect={(selectedIndex) => {
             if (selectedIndex === roundedIndex) onEnter(selectedIndex);
             else rotation.goTo(selectedIndex);

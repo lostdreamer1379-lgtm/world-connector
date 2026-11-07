@@ -5,7 +5,7 @@ interface InstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
-export default function InstallAppButton() {
+export default function InstallAppButton({ compact = false }: { compact?: boolean }) {
   const [promptEvent, setPromptEvent] = useState<InstallPromptEvent | null>(null);
   const [iosHelp, setIosHelp] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -45,9 +45,9 @@ export default function InstallAppButton() {
   }
 
   return <>
-    <button className="install-app-button" onClick={promptEvent ? install : () => setIosHelp(true)} aria-label="Install World Connector">
+    <button className={compact ? "top-control-button toolbar-install-button" : "install-app-button"} onClick={promptEvent ? install : () => setIosHelp(true)} aria-label="Install World Connector" title="Install app">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" /></svg>
-      <span>Install</span>
+      {!compact && <span>Install</span>}
     </button>
     {iosHelp && <div className="install-dialog-backdrop" onClick={() => setIosHelp(false)} role="presentation">
       <section className="install-dialog" role="dialog" aria-modal="true" aria-labelledby="install-title" onClick={(event) => event.stopPropagation()}>

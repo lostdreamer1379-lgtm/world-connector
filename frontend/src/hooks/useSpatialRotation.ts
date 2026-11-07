@@ -14,10 +14,10 @@ export interface RotationPhysicsConfig {
 }
 
 export const DESKTOP_ROTATION_PHYSICS: RotationPhysicsConfig = {
-  frictionPerMs: 0.0028,
+  frictionPerMs: 0.0025,
   maxVelocity: 0.028,
-  springStiffness: 140,
-  springDamping: 18,
+  springStiffness: 108,
+  springDamping: 21,
   velocityStopThreshold: 0.00015,
   snapThreshold: 0.004,
   rubberBandResistance: 0.3,
@@ -25,8 +25,10 @@ export const DESKTOP_ROTATION_PHYSICS: RotationPhysicsConfig = {
 
 export const MOBILE_ROTATION_PHYSICS: RotationPhysicsConfig = {
   ...DESKTOP_ROTATION_PHYSICS,
-  frictionPerMs: 0.0032,
-  maxVelocity: 0.03,
+  frictionPerMs: 0.0028,
+  maxVelocity: 0.028,
+  springStiffness: 96,
+  springDamping: 20,
 };
 
 // Used when the person has "reduce motion" on: fast, direct, no momentum
@@ -35,8 +37,8 @@ export const MOBILE_ROTATION_PHYSICS: RotationPhysicsConfig = {
 export const REDUCED_MOTION_PHYSICS: RotationPhysicsConfig = {
   frictionPerMs: 0.02,
   maxVelocity: 0.02,
-  springStiffness: 320,
-  springDamping: 34,
+  springStiffness: 260,
+  springDamping: 38,
   velocityStopThreshold: 0.0006,
   snapThreshold: 0.004,
   rubberBandResistance: 0.15,

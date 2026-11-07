@@ -8,7 +8,7 @@ function OpeningSequence() {
 
   useEffect(() => {
     setAppMode(window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true);
-    const timer = window.setTimeout(() => setVisible(false), 1200);
+    const timer = window.setTimeout(() => setVisible(false), 2300);
     return () => window.clearTimeout(timer);
   }, []);
 

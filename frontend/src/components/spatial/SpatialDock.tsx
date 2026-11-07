@@ -16,8 +16,8 @@ interface SpatialDockProps {
  */
 export default function SpatialDock({ worlds, focusedIndex, onSelect }: SpatialDockProps) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center px-4">
-      <div className="pointer-events-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-full border border-white/10 bg-white/5 px-3 py-2 shadow-[0_20px_45px_-20px_rgba(0,0,0,0.75)] backdrop-blur-2xl">
+    <div className="spatial-dock-wrap pointer-events-none absolute inset-x-0 bottom-7 flex justify-center px-4">
+      <div className="spatial-dock pointer-events-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-full border border-white/10 bg-white/[0.055] px-3 py-2 shadow-[0_22px_54px_-20px_rgba(0,0,0,0.72),inset_0_1px_rgba(255,255,255,.09)] backdrop-blur-2xl">
         {worlds.map((world, index) => {
           const isFocused = index === focusedIndex;
           return (
@@ -27,7 +27,7 @@ export default function SpatialDock({ worlds, focusedIndex, onSelect }: SpatialD
               onClick={() => onSelect(index)}
               aria-label={`Go to ${world.name}`}
               aria-current={isFocused}
-              className={`relative flex-shrink-0 overflow-hidden rounded-full border transition-all duration-300 ${
+              className={`dock-item relative flex-shrink-0 overflow-hidden rounded-full border transition-all duration-300 ${
                 isFocused
                   ? "h-11 w-11 border-white/50 opacity-100"
                   : "h-8 w-8 border-white/10 opacity-55 hover:opacity-85"
@@ -36,7 +36,7 @@ export default function SpatialDock({ worlds, focusedIndex, onSelect }: SpatialD
               {world.artworkUrl ? (
                 <img src={world.artworkUrl} alt="" className="h-full w-full object-cover" />
               ) : (
-                <ArtworkPlaceholder name={world.name} accentColor={world.accentColor} />
+                <ArtworkPlaceholder name={world.name} accentColor={world.accentColor} compact />
               )}
             </button>
           );

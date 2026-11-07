@@ -21,9 +21,8 @@ import InstallAppButton from "../components/InstallAppButton";
  * "where focus is" no matter how it got there (drag, side arrows,
  * dock click, or arrow keys).
  *
- * Still deliberately NOT here: the world-entry transition and actual
- * navigation to destinationUrl on selection (Phase 4), and the admin
- * panel (Phase 5).
+ * Focus, spatial arrangement, dock navigation, and world entry are all
+ * driven from this single rotation instance.
  */
 export default function Home() {
   const { worlds, isLoading, error } = useWorlds();

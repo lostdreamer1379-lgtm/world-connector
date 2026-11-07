@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { World } from "../../types/world";
 import { CardTransform } from "../../geometry/spatialLayout";
@@ -23,13 +24,16 @@ interface SpatialWorldCardProps {
  */
 export default function SpatialWorldCard({ world, transform, isFocused, onSelect }: SpatialWorldCardProps) {
   const { translateX, translateY, translateZ, rotateX, rotateY, scale, opacity, zIndex, index } = transform;
+  const [artworkFailed, setArtworkFailed] = useState(false);
+
+  useEffect(() => setArtworkFailed(false), [world.artworkUrl]);
 
   return (
     <motion.button
       type="button"
       onClick={() => onSelect(index)}
-      className="absolute left-1/2 top-1/2 overflow-hidden rounded-[28px] border border-white/10 bg-neutral-900/50 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.65)] backdrop-blur-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-      style={{ width: isFocused ? 320 : 250, height: isFocused ? 420 : 330, zIndex, touchAction: "none" }}
+      className={`world-card absolute left-1/2 top-1/2 overflow-hidden rounded-[32px] border border-white/10 bg-neutral-900/50 shadow-[0_38px_100px_-34px_rgba(0,0,0,0.78)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${isFocused ? "world-card-focused" : "world-card-near"}`}
+      style={{ zIndex, touchAction: "none", transformStyle: "preserve-3d" }}
       animate={{
         x: `calc(-50% + ${translateX}px)`,
         y: `calc(-50% + ${translateY}px)`,
@@ -44,22 +48,24 @@ export default function SpatialWorldCard({ world, transform, isFocused, onSelect
       aria-label={world.description ? `${world.name} — ${world.description}` : world.name}
     >
       <div className="relative h-full w-full">
-        {world.artworkUrl ? (
+        {world.artworkUrl && !artworkFailed ? (
           <img
             src={world.artworkUrl}
             alt={world.artworkAlt ?? world.name}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="world-artwork absolute inset-0 h-full w-full object-cover"
             loading="lazy"
             draggable={false}
+            onError={() => setArtworkFailed(true)}
           />
         ) : (
           <ArtworkPlaceholder name={world.name} accentColor={world.accentColor} />
         )}
 
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent px-5 pb-5 pt-16">
-          <p className="text-lg font-medium tracking-wide text-white">{world.name}</p>
+        <div className="world-card-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent px-7 pb-7 pt-28 text-left">
+          {world.category && <p className="mb-2 text-[10px] uppercase tracking-[.24em] text-white/55">{world.category}</p>}
+          <p className="text-xl font-medium tracking-[.035em] text-white md:text-2xl">{world.name}</p>
           {isFocused && world.description && (
-            <p className="mt-1 line-clamp-2 text-sm text-white/70">{world.description}</p>
+            <p className="mt-2 line-clamp-2 max-w-[30rem] text-sm leading-relaxed text-white/70">{world.description}</p>
           )}
         </div>
       </div>

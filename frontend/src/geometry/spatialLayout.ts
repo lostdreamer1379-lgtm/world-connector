@@ -9,8 +9,8 @@ import { Orientation } from "../hooks/useViewportOrientation";
 
 export interface LayoutConfig {
   orientation: Orientation;
-  spacing: number; // px between adjacent card centers along the main axis
-  depthStep: number; // px pushed back (z) per step away from focus
+  spacing: number; // chord distance between adjacent card centers
+  radius: number; // radius of the invisible spatial arc
   angleStep: number; // degrees rotated per step away from focus
   scaleStep: number; // scale lost per step away from focus
   minScale: number;
@@ -20,9 +20,9 @@ export interface LayoutConfig {
 
 export const DESKTOP_LAYOUT: LayoutConfig = {
   orientation: "horizontal",
-  spacing: 300,
-  depthStep: 150,
-  angleStep: 16,
+  spacing: 420,
+  radius: 1015,
+  angleStep: 24,
   scaleStep: 0.14,
   minScale: 0.55,
   minOpacity: 0.12,
@@ -31,17 +31,23 @@ export const DESKTOP_LAYOUT: LayoutConfig = {
 
 export const MOBILE_LAYOUT: LayoutConfig = {
   orientation: "vertical",
-  spacing: 190,
-  depthStep: 130,
-  angleStep: 18,
+  spacing: 230,
+  radius: 557,
+  angleStep: 24,
   scaleStep: 0.16,
   minScale: 0.5,
   minOpacity: 0.12,
   maxVisibleOffset: 2,
 };
 
-export function getLayoutConfig(orientation: Orientation): LayoutConfig {
-  return orientation === "horizontal" ? DESKTOP_LAYOUT : MOBILE_LAYOUT;
+export function getLayoutConfig(orientation: Orientation, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight): LayoutConfig {
+  if (orientation === "horizontal") {
+    const spacing = Math.min(700, Math.max(420, viewportWidth * 0.34));
+    return { ...DESKTOP_LAYOUT, spacing, radius: spacing / Math.sin((DESKTOP_LAYOUT.angleStep * Math.PI) / 180) };
+  }
+
+  const spacing = Math.min(280, Math.max(210, viewportHeight * 0.28));
+  return { ...MOBILE_LAYOUT, spacing, radius: spacing / Math.sin((MOBILE_LAYOUT.angleStep * Math.PI) / 180) };
 }
 
 export interface CardTransform {
@@ -65,19 +71,20 @@ export function computeCardTransform(index: number, offset: number, config: Layo
   const abs = Math.abs(offset);
   const scale = Math.max(config.minScale, 1 - abs * config.scaleStep);
   const opacity = Math.max(config.minOpacity, 1 - abs * 0.3);
-  const translateZ = -abs * config.depthStep;
+  const angleRadians = (offset * config.angleStep * Math.PI) / 180;
+  const translateZ = -(1 - Math.cos(angleRadians)) * config.radius;
   const zIndex = 1000 - Math.round(abs * 10);
-  const maxAngle = config.angleStep * config.maxVisibleOffset;
+  const angle = clamp(offset * config.angleStep, -72, 72);
 
   if (config.orientation === "horizontal") {
     return {
       index,
       offset,
-      translateX: offset * config.spacing,
+      translateX: Math.sin(angleRadians) * config.radius,
       translateY: 0,
       translateZ,
       rotateX: 0,
-      rotateY: clamp(-offset * config.angleStep, -maxAngle, maxAngle),
+      rotateY: -angle,
       scale,
       opacity,
       zIndex,
@@ -88,9 +95,9 @@ export function computeCardTransform(index: number, offset: number, config: Layo
     index,
     offset,
     translateX: 0,
-    translateY: offset * config.spacing,
+    translateY: Math.sin(angleRadians) * config.radius,
     translateZ,
-    rotateX: clamp(offset * config.angleStep, -maxAngle, maxAngle),
+    rotateX: angle,
     rotateY: 0,
     scale,
     opacity,
@@ -113,8 +120,13 @@ export function getVisibleCards(
   maxVisibleOffset: number
 ): { index: number; offset: number }[] {
   const items: { index: number; offset: number }[] = [];
+  if (count === 0) return items;
   for (let index = 0; index < count; index++) {
-    const offset = index - focusedPosition;
+    const rawOffset = index - focusedPosition;
+    let offset = ((rawOffset % count) + count) % count;
+    if (offset > count / 2 || (count % 2 === 0 && offset === count / 2 && rawOffset < 0)) {
+      offset -= count;
+    }
     if (Math.abs(offset) <= maxVisibleOffset) {
       items.push({ index, offset });
     }

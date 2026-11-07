@@ -8,8 +8,8 @@ interface NavigationControlsProps {
   canGoNext: boolean;
 }
 
-const buttonClass =
-  "pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-white/60 backdrop-blur-xl transition hover:bg-white/10 hover:text-white disabled:opacity-0 disabled:pointer-events-none";
+  const buttonClass =
+  "nav-control pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-white/60 backdrop-blur-xl transition hover:bg-white/10 hover:text-white";
 
 /**
  * Quiet side controls — not prominent buttons. A press applies a small
@@ -38,7 +38,7 @@ export default function NavigationControls({
         type="button"
         className={buttonClass}
         onClick={onPrev}
-        disabled={!canGoPrev}
+        aria-disabled={!canGoPrev}
         aria-label="Previous world"
       >
         {prevLabel}
@@ -47,7 +47,7 @@ export default function NavigationControls({
         type="button"
         className={buttonClass}
         onClick={onNext}
-        disabled={!canGoNext}
+        aria-disabled={!canGoNext}
         aria-label="Next world"
       >
         {nextLabel}

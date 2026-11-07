@@ -205,9 +205,11 @@ export function useSpatialRotation(
   const step = useCallback(
     (direction: 1 | -1) => {
       const base = settleTargetRef.current ?? Math.round(positionRef.current);
-      goTo(base + direction);
+      if (count < 2) return;
+      const next = ((base + direction) % count + count) % count;
+      goTo(next);
     },
-    [goTo]
+    [count, goTo]
   );
 
   // If the collection shrinks (admin deactivates a world) under an

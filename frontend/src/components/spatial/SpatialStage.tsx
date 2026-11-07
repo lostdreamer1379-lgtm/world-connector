@@ -22,7 +22,7 @@ interface SpatialStageProps {
  * exactly one source of truth for where focus is.
  */
 export default function SpatialStage({ worlds, orientation, rotation, onEnter }: SpatialStageProps) {
-  const layout = getLayoutConfig(orientation);
+  const layout = getLayoutConfig(orientation, window.innerWidth, window.innerHeight);
   const roundedIndex = Math.max(0, Math.min(worlds.length - 1, Math.round(rotation.position)));
 
   const dragHandlers = useDragInteraction({
@@ -71,8 +71,8 @@ export default function SpatialStage({ worlds, orientation, rotation, onEnter }:
         orientation={orientation}
         onPrev={() => rotation.step(-1)}
         onNext={() => rotation.step(1)}
-        canGoPrev={roundedIndex > 0}
-        canGoNext={roundedIndex < worlds.length - 1}
+        canGoPrev={worlds.length > 1}
+        canGoNext={worlds.length > 1}
       />
     </div>
   );

@@ -16,6 +16,26 @@ body {
 }
 
 button, input, textarea, select { font: inherit; }
+.world-card { width: clamp(19rem, 25vw, 31rem); height: clamp(25rem, 52vh, 43rem); border-color: rgba(239,232,219,.13); background: rgba(23,22,21,.82); box-shadow: 0 45px 110px -38px rgba(0,0,0,.82), 0 1px 0 rgba(255,255,255,.08) inset; transition: border-color .35s ease, box-shadow .35s ease; }
+.world-card-focused { border-color: rgba(239,232,219,.23); box-shadow: 0 52px 130px -38px rgba(0,0,0,.88), 0 1px 0 rgba(255,255,255,.12) inset; }
+.world-card-near { border-color: rgba(239,232,219,.11); }
+.world-artwork { user-select: none; -webkit-user-drag: none; }
+.world-card-caption { padding-bottom: 30px; }
+.world-placeholder::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.035) 49%, transparent 72%); }
+.placeholder-orbit { position: absolute; width: 58%; aspect-ratio: 1; border: 1px solid rgba(255,249,239,.12); border-radius: 50%; transform: rotate(-28deg) scaleY(.72); }
+.placeholder-orbit-large { width: 75%; border-color: rgba(255,249,239,.095); }
+.placeholder-orbit-small { width: 45%; transform: rotate(32deg) scaleY(.72); }
+.placeholder-letter { position: relative; z-index: 1; font-family: Georgia, serif; text-shadow: 0 14px 40px rgba(0,0,0,.35); }
+.placeholder-point { position: absolute; z-index: 2; width: 5px; height: 5px; border-radius: 50%; background: rgba(248,239,222,.7); box-shadow: 0 0 18px rgba(248,239,222,.45); }
+.placeholder-point-one { top: 26%; left: 27%; }
+.placeholder-point-two { right: 25%; bottom: 27%; width: 4px; height: 4px; opacity: .72; }
+.spatial-dock { max-width: min(92vw, 720px); min-height: 70px; padding: 9px 12px; gap: 10px; background: linear-gradient(150deg,rgba(255,255,255,.085),rgba(255,255,255,.035)); border-color: rgba(255,255,255,.14); }
+.dock-item { display: grid; place-items: center; background: rgba(255,255,255,.035); }
+.nav-control { width: 48px; height: 48px; background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.12); box-shadow: 0 10px 32px rgba(0,0,0,.15), inset 0 1px rgba(255,255,255,.06); }
+.nav-control[aria-disabled="true"] { opacity: .24; pointer-events: none; }
+@media (min-width: 768px) { .spatial-dock-wrap { bottom: max(34px, env(safe-area-inset-bottom)); } }
+@media (max-width: 767px) { .world-card { width: min(82vw, 23rem); height: min(52vh, 35rem); min-height: 19rem; border-radius: 27px; } .world-card-caption { padding: 0 22px 23px; padding-top: 7rem; } .spatial-dock-wrap { bottom: max(18px, env(safe-area-inset-bottom)); } .spatial-dock { min-height: 60px; gap: 7px; padding: 7px 9px; } .nav-control { width: 42px; height: 42px; } }
+@media (prefers-reduced-motion: reduce) { .world-card, .dock-item, .nav-control { transition-duration: .01ms !important; } }
 .opening-sequence { position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center; justify-items: center; overflow: hidden; background: radial-gradient(ellipse at 50% 44%, #282624 0%, #111112 44%, #09090a 100%); color: #f0ece5; animation: opening-exit .68s cubic-bezier(.22,.72,.24,1) 0.5s both; }
 .opening-mark { position: relative; display: grid; width: 84px; height: 84px; place-items: center; border: 1px solid rgba(241,236,226,.32); border-radius: 29px; background: linear-gradient(145deg, rgba(255,255,255,.13), rgba(255,255,255,.025)); box-shadow: 0 20px 80px rgba(0,0,0,.45), inset 0 1px rgba(255,255,255,.16); backdrop-filter: blur(16px); animation: mark-arrive .75s cubic-bezier(.2,.85,.25,1) both; }
 .opening-mark span { font-family: Georgia, serif; font-size: 46px; font-weight: 400; letter-spacing: -.09em; transform: translateX(-2px); background: linear-gradient(140deg,#fffdf6,#aaa49b); color: transparent; background-clip: text; }

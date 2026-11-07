@@ -1,0 +1,37 @@
+// World Connector — Prisma schema
+// A single, generic entity represents every website in the hub.
+// The frontend and backend must never special-case a world by name —
+// all behavior is driven by this data.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OpenMode {
+  SAME_TAB
+  NEW_TAB
+}
+
+model World {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  name            String
+  description     String?
+  destinationUrl  String
+  artworkUrl      String?
+  artworkAlt      String?
+  accentColor     String?
+  category        String?
+  sortOrder       Int      @default(0)
+  isActive        Boolean  @default(true)
+  openMode        OpenMode @default(SAME_TAB)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="surface" x1="70" y1="60" x2="440" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34312d"/><stop offset="1" stop-color="#101011"/>
+    </linearGradient>
+    <linearGradient id="letter" x1="142" y1="139" x2="376" y2="374" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf7"/><stop offset="1" stop-color="#a7a096"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0" cy="0" r="1" gradientTransform="matrix(210 205 -186 190 167 116)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#aaa092" stop-opacity=".27"/><stop offset="1" stop-color="#aaa092" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="118" fill="url(#surface)"/>
+  <rect width="512" height="512" rx="118" fill="url(#light)"/>
+  <rect x="31" y="31" width="450" height="450" rx="99" stroke="#fff" stroke-opacity=".11" stroke-width="2"/>
+  <circle cx="256" cy="256" r="157" stroke="#eee8dc" stroke-opacity=".12" stroke-width="2"/>
+  <ellipse cx="256" cy="256" rx="157" ry="76" transform="rotate(-34 256 256)" stroke="#eee8dc" stroke-opacity=".21" stroke-width="2"/>
+  <circle cx="138" cy="177" r="7" fill="#e5dac8" fill-opacity=".76"/>
+  <circle cx="373" cy="325" r="5" fill="#e5dac8" fill-opacity=".58"/>
+  <path d="m126 177 43 124 40-93 47 93 42-124 43 124 43-124" fill="none" stroke="url(#letter)" stroke-linecap="round" stroke-linejoin="round" stroke-width="25"/>
+</svg>

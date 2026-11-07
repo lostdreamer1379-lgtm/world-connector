@@ -1,0 +1,17 @@
+{
+  "id": "/",
+  "name": "World Connector",
+  "short_name": "Worlds",
+  "description": "A quiet space to explore and enter your digital worlds.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b0b0c",
+  "theme_color": "#0b0b0c",
+  "categories": ["entertainment", "lifestyle"],
+  "icons": [
+    { "src": "/world-connector.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/world-connector.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

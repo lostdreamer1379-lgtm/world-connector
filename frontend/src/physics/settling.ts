@@ -18,9 +18,19 @@ export function springStep(
   config: SpringConfig,
   deltaSeconds: number
 ): { position: number; velocity: number } {
-  const displacement = position - target;
-  const acceleration = -config.stiffness * displacement - config.damping * velocity;
-  const nextVelocity = velocity + acceleration * deltaSeconds;
-  const nextPosition = position + nextVelocity * deltaSeconds;
+  // Integrate in small slices so a dropped frame cannot make the card
+  // overshoot and visibly reverse before settling.
+  const slices = Math.max(1, Math.ceil(deltaSeconds / 0.008));
+  const step = deltaSeconds / slices;
+  let nextPosition = position;
+  let nextVelocity = velocity;
+
+  for (let index = 0; index < slices; index += 1) {
+    const displacement = nextPosition - target;
+    const acceleration = -config.stiffness * displacement - config.damping * nextVelocity;
+    nextVelocity += acceleration * step;
+    nextPosition += nextVelocity * step;
+  }
+
   return { position: nextPosition, velocity: nextVelocity };
 }

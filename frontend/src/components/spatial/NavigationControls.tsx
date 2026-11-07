@@ -25,9 +25,11 @@ export default function NavigationControls({
 }: NavigationControlsProps) {
   const isHorizontal = orientation === "horizontal";
 
+  if (!isHorizontal) return null;
+
   const containerClass = isHorizontal
-    ? "pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-5 md:px-10"
-    : "pointer-events-none absolute inset-x-0 top-6 bottom-28 flex flex-col items-center justify-between";
+    ? "pointer-events-none absolute inset-y-0 left-0 right-0 z-30 flex items-center justify-between px-5 md:px-10"
+    : "pointer-events-none absolute right-3 top-16 bottom-32 z-30 flex flex-col items-center justify-between md:right-6";
 
   const prevLabel = isHorizontal ? "‹" : "↑";
   const nextLabel = isHorizontal ? "›" : "↓";

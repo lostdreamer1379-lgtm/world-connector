@@ -196,6 +196,9 @@ export function useSpatialRotation(
     (index: number) => {
       const clamped = Math.max(0, Math.min(maxIndex, Math.round(index)));
       settleTargetRef.current = clamped;
+      // A direct selection is a new intention. Carry only a small amount of
+      // existing energy into the spring so the card never reverses sharply.
+      velocityRef.current *= 0.2;
       phaseRef.current = "settling";
       startLoop();
     },

@@ -123,9 +123,15 @@ export function getVisibleCards(
   if (count === 0) return items;
   for (let index = 0; index < count; index++) {
     const rawOffset = index - focusedPosition;
-    let offset = ((rawOffset % count) + count) % count;
-    if (offset > count / 2 || (count % 2 === 0 && offset === count / 2 && rawOffset < 0)) {
-      offset -= count;
+    // With two worlds, a wrapped circular offset makes the cards trade
+    // sides at the halfway point. Keep their paths linear so the focused
+    // card travels directly into the centre without a visual twitch.
+    let offset = rawOffset;
+    if (count > 2) {
+      offset = ((rawOffset % count) + count) % count;
+      if (offset > count / 2 || (count % 2 === 0 && offset === count / 2 && rawOffset < 0)) {
+        offset -= count;
+      }
     }
     if (Math.abs(offset) <= maxVisibleOffset) {
       items.push({ index, offset });

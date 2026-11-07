@@ -83,7 +83,7 @@ export default function Home() {
       {!isLoading && !error && worlds.length > 0 && (
         <>
           <SpatialStage worlds={worlds} orientation={orientation} rotation={rotation} onEnter={enterWorld} />
-          <SpatialDock worlds={worlds} focusedIndex={roundedIndex} onSelect={rotation.goTo} />
+          <SpatialDock worlds={worlds} focusedIndex={roundedIndex} onSelect={rotation.goTo} orientation={orientation} onPrev={() => rotation.step(-1)} onNext={() => rotation.step(1)} canNavigate={worlds.length > 1} />
         </>
       )}
       {isEntering && <div className="pointer-events-none fixed inset-0 z-50 bg-[#0b0b0c]/75 opacity-100 backdrop-blur-md transition-opacity" aria-label="Entering world" />}

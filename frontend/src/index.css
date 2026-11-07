@@ -97,6 +97,9 @@ button, input, textarea, select { font: inherit; }
 .theme-color-fields label { display: grid; gap: 6px; color: rgba(255,255,255,.58); font-size: .68rem; }
 .theme-color-fields input[type=color] { width: 42px; height: 34px; padding: 3px; border: 1px solid rgba(255,255,255,.13); border-radius: 8px; background: rgba(255,255,255,.07); cursor: pointer; }
 .theme-save-button { margin-left: auto; padding: 9px 13px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(255,255,255,.12); color: white; font-size: .74rem; cursor: pointer; }
+.theme-apply-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; padding: 12px 0 0; border-top: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.5); font-size: .72rem; }
+.theme-apply-button { padding: 10px 16px; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; background: rgba(255,255,255,.92); color: #121212; font-size: .74rem; font-weight: 600; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+.theme-apply-button:hover { background: #fff; transform: translateY(-1px); }
 @media (max-width: 767px) { .top-controls { top: max(10px,env(safe-area-inset-top)); right: max(10px,env(safe-area-inset-right)); gap: 6px; } .top-control-button { width: 38px; height: 38px; } .theme-panel { padding: 20px; border-radius: 22px; } .theme-grid { gap: 7px; } .theme-option { padding: 6px; font-size: .65rem; } .theme-swatch { height: 46px; } }
 .install-dialog-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; place-items: end center; padding: 18px 14px max(18px, env(safe-area-inset-bottom)); background: rgba(0,0,0,.5); backdrop-filter: blur(8px); }
 .install-dialog { position: relative; width: min(100%, 420px); padding: 26px; border: 1px solid rgba(255,255,255,.13); border-radius: 24px; background: #1a1a1b; box-shadow: 0 24px 80px rgba(0,0,0,.5); color: #f2eee7; }

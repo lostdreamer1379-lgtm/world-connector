@@ -59,7 +59,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden" style={{ "--scene-bg": theme.background, "--scene-surface": theme.surface } as React.CSSProperties}>
+    <div className="relative h-screen w-screen overflow-hidden" style={{ backgroundColor: theme.background, "--scene-bg": theme.background, "--scene-surface": theme.surface } as React.CSSProperties}>
       <AmbientBackground focusedWorld={focusedWorld} theme={theme} />
       <div className="top-controls"><button className="top-control-button" onClick={() => window.location.reload()} aria-label="Reload worlds" title="Reload"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4.9 9a7.5 7.5 0 0 1 12.6-2L20 12M4 17v-5h5m10.1 3a7.5 7.5 0 0 1-12.6 2L4 12"/></svg></button><ThemeMenu onThemeChange={setTheme} /><InstallAppButton compact /></div>
 

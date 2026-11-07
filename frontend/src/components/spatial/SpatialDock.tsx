@@ -19,6 +19,7 @@ export default function SpatialDock({ worlds, focusedIndex, onSelect, orientatio
   const [isExpanded, setIsExpanded] = useState(false);
   const isMobile = orientation === "vertical";
   const hiddenCount = Math.max(0, worlds.length - MAX_MOBILE_DOCK_ITEMS);
+  const hasOverflow = isMobile && hiddenCount > 0;
   const start = Math.max(0, Math.min(focusedIndex - 1, worlds.length - MAX_MOBILE_DOCK_ITEMS));
   const visibleWorlds = isMobile && hiddenCount > 0 ? worlds.slice(start, start + MAX_MOBILE_DOCK_ITEMS) : worlds;
   const arrowClass = "dock-navigation-button flex shrink-0 items-center justify-center rounded-full border border-white/10 text-white/65 transition hover:bg-white/10 hover:text-white disabled:pointer-events-none disabled:opacity-25";
@@ -31,9 +32,9 @@ export default function SpatialDock({ worlds, focusedIndex, onSelect, orientatio
   return (
     <>
       <div className={`spatial-dock-wrap pointer-events-none absolute ${isMobile ? "inset-y-0 right-3 flex items-center" : "inset-x-0 bottom-7 flex justify-center px-4"}`}>
-        <div className={`spatial-dock pointer-events-auto flex ${isMobile ? "h-[min(72dvh,38rem)] w-[4.5rem] flex-col py-3" : "max-w-full flex-row px-3 py-2"} items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-white/[0.055] shadow-[0_22px_54px_-20px_rgba(0,0,0,0.72),inset_0_1px_rgba(255,255,255,.09)] backdrop-blur-2xl`}>
+        <div className={`spatial-dock pointer-events-auto flex ${isMobile ? `${hasOverflow ? "max-h-[min(72dvh,38rem)]" : "h-auto"} w-[4.25rem] flex-col py-2.5` : "max-w-full flex-row px-3 py-2"} items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-white/[0.055] shadow-[0_22px_54px_-20px_rgba(0,0,0,0.72),inset_0_1px_rgba(255,255,255,.09)] backdrop-blur-2xl`}>
           {isMobile && <button type="button" className={`${arrowClass} h-10 w-10 text-lg`} onClick={onPrev} disabled={!canNavigate} aria-label="Previous world">↑</button>}
-          <div className={`dock-world-list flex ${isMobile ? "min-h-0 w-full flex-1 flex-col items-center overflow-hidden py-1" : "max-w-full flex-row overflow-x-auto"} items-center gap-2`}>
+          <div className={`dock-world-list flex ${isMobile ? `${hasOverflow ? "min-h-0 flex-1 overflow-hidden" : "flex-none"} w-full flex-col items-center py-1` : "max-w-full flex-row overflow-x-auto"} items-center gap-2`}>
             {visibleWorlds.map((world) => {
               const index = worlds.findIndex((candidate) => candidate.id === world.id);
               const isFocused = index === focusedIndex;

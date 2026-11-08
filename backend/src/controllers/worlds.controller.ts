@@ -12,7 +12,15 @@ export async function listPublicWorlds(_req: Request, res: Response) {
       where: { isActive: true },
       orderBy: { sortOrder: "asc" },
     });
-    res.json({ worlds });
+    // Older seeded records used "antieku" in the Vercel hostname. Normalize
+    // that record at the API boundary so deployed hubs immediately emit the
+    // same HTTPS origin that the Anteiku PWA is installed from.
+    const normalizedWorlds = worlds.map((world) =>
+      world.slug === "anteiku" && world.destinationUrl.includes("frontend-antieku.vercel.app")
+        ? { ...world, destinationUrl: world.destinationUrl.replace("frontend-antieku.vercel.app", "frontend-anteiku.vercel.app") }
+        : world
+    );
+    res.json({ worlds: normalizedWorlds });
   } catch (err) {
     console.error("[listPublicWorlds]", err);
     res.status(500).json({ error: "Failed to load worlds" });

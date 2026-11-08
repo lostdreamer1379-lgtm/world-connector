@@ -109,13 +109,14 @@ button, input, textarea, select { font: inherit; }
 .install-dialog strong { color: rgba(255,255,255,.92); font-weight: 500; }
 .install-dialog-close { position: absolute; top: 15px; right: 16px; border: 0; background: none; color: rgba(255,255,255,.58); font-size: 1.5rem; cursor: pointer; }
 .share-glyph { display: inline-grid; width: 23px; height: 23px; place-items: center; border: 1px solid rgba(255,255,255,.3); border-radius: 6px; color: #fff; font-size: 1rem; vertical-align: middle; }
-.admin-shell { min-height: 100%; overflow: auto; background: radial-gradient(circle at 50% -10%, #34302b, #101011 48%, #080809); color: #eeeae4; padding: 32px 20px 80px; }
+.admin-shell { height: 100dvh; min-height: 0; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; scrollbar-gutter: stable; background: radial-gradient(circle at 50% -10%, #34302b, #101011 48%, #080809); color: #eeeae4; padding: 32px 20px 80px; }
 .admin-layout { max-width: 1160px; margin: 0 auto; }
 .admin-header, .form-heading, .admin-actions, .row-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .admin-header { margin: 20px 0 30px; }
 .admin-header h1, .admin-card h2 { margin: 4px 0 0; font-weight: 400; letter-spacing: -.03em; }
 .admin-header h1 { font-size: clamp(2rem, 5vw, 3.6rem); }
 .admin-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 18px; align-items: start; }
+.admin-grid > * { min-width: 0; }
 .admin-card { border: 1px solid rgba(255,255,255,.11); border-radius: 24px; padding: 24px; background: rgba(255,255,255,.065); box-shadow: 0 24px 70px rgba(0,0,0,.22); backdrop-filter: blur(24px); }
 .admin-card.max-w-md { margin: 10vh auto; max-width: 430px; display: grid; gap: 14px; }
 .eyebrow { margin: 0; color: rgba(255,255,255,.44); font-size: .68rem; letter-spacing: .18em; }

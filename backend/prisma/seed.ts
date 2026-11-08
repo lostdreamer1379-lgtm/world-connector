@@ -31,7 +31,10 @@ async function main() {
       slug: "anteiku",
       name: "ANTEIKU",
       description: "Explore the world of anime.",
-      destinationUrl: "https://frontend-antieku.vercel.app/",
+      // Keep this on Anteiku's canonical HTTPS origin. When Anteiku is
+      // installed as a PWA, its manifest can capture this origin and open
+      // the standalone app; otherwise this remains the browser fallback.
+      destinationUrl: "https://frontend-anteiku.vercel.app/",
       artworkUrl: null,
       artworkAlt: "ANTEIKU artwork placeholder",
       accentColor: "#6E655A",

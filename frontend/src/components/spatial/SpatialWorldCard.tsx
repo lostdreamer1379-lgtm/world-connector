@@ -30,9 +30,21 @@ export default function SpatialWorldCard({ world, transform, isFocused, isEnteri
   useEffect(() => setArtworkFailed(false), [world.artworkUrl]);
 
   return (
-    <motion.button
-      type="button"
-      onClick={() => onSelect(index)}
+    <motion.a
+      href={isFocused ? world.destinationUrl : undefined}
+      target={isFocused && world.openMode === "NEW_TAB" ? "_blank" : undefined}
+      rel={isFocused && world.openMode === "NEW_TAB" ? "noopener noreferrer" : undefined}
+      onClick={(event) => {
+        // Only the focused card is an active destination. Keeping the other
+        // cards as focus controls prevents accidental navigation while still
+        // making the actual world entry a real HTTPS link. That lets an
+        // installed PWA claim the link on mobile; otherwise the browser opens
+        // the same URL normally.
+        if (!isFocused) {
+          event.preventDefault();
+          onSelect(index);
+        }
+      }}
       className={`world-card absolute left-1/2 top-1/2 overflow-hidden rounded-[32px] border border-white/10 shadow-[0_38px_100px_-34px_rgba(0,0,0,0.78)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${isFocused ? "world-card-focused" : "world-card-near"}`}
       style={{ zIndex, touchAction: "none", transformStyle: "preserve-3d", transformOrigin: "50% 50%", willChange: "transform, opacity" }}
       animate={{
@@ -70,6 +82,6 @@ export default function SpatialWorldCard({ world, transform, isFocused, isEnteri
           )}
         </div>
       </div>
-    </motion.button>
+    </motion.a>
   );
 }

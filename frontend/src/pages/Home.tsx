@@ -58,8 +58,6 @@ export default function Home() {
     setEnteringIndex(worldIndex);
     setIsEntering(true);
     window.setTimeout(() => {
-      if (world.openMode === "NEW_TAB") window.open(world.destinationUrl, "_blank", "noopener,noreferrer");
-      else window.location.assign(world.destinationUrl);
       setIsEntering(false);
       setEnteringIndex(null);
     }, 900);

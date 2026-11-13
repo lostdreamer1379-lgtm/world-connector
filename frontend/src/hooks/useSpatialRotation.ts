@@ -114,10 +114,8 @@ export function useSpatialRotation(
         let next = positionRef.current + velocityRef.current * deltaMs;
         velocityRef.current = applyFriction(velocityRef.current, deltaMs, config.frictionPerMs);
 
-        if (next < 0 || next > maxIndex) {
-          next = Math.max(0, Math.min(maxIndex, next));
-          velocityRef.current = 0; // soft stop at the ends rather than a bounce
-        }
+        // The carousel is circular: keep the animation position unwrapped so
+        // 2 → 0 continues to 3 (for a three-card deck) instead of reversing.
 
         commit(next);
 
@@ -127,7 +125,7 @@ export function useSpatialRotation(
         }
       } else if (phaseRef.current === "settling") {
         const target =
-          settleTargetRef.current ?? Math.max(0, Math.min(maxIndex, Math.round(positionRef.current)));
+          settleTargetRef.current ?? Math.round(positionRef.current);
         const { position: nextPos, velocity: nextVel } = springStep(
           positionRef.current,
           velocityRef.current,
@@ -174,9 +172,9 @@ export function useSpatialRotation(
   const dragBy = useCallback(
     (deltaIndex: number) => {
       const raw = positionRef.current + deltaIndex;
-      commit(clampWithRubberBand(raw, 0, maxIndex, config.rubberBandResistance));
+      commit(count > 1 ? raw : clampWithRubberBand(raw, 0, maxIndex, config.rubberBandResistance));
     },
-    [commit, config.rubberBandResistance, maxIndex]
+    [commit, config.rubberBandResistance, count, maxIndex]
   );
 
   const endDrag = useCallback(
@@ -186,9 +184,7 @@ export function useSpatialRotation(
       velocityRef.current = clamped;
       settleTargetRef.current = null;
 
-      const outOfBounds = positionRef.current < 0 || positionRef.current > maxIndex;
-      phaseRef.current =
-        outOfBounds || Math.abs(clamped) < config.velocityStopThreshold ? "settling" : "momentum";
+      phaseRef.current = Math.abs(clamped) < config.velocityStopThreshold ? "settling" : "momentum";
       startLoop();
     },
     [config.maxVelocity, config.velocityStopThreshold, maxIndex, startLoop]
@@ -196,32 +192,35 @@ export function useSpatialRotation(
 
   const goTo = useCallback(
     (index: number) => {
-      const clamped = Math.max(0, Math.min(maxIndex, Math.round(index)));
-      settleTargetRef.current = clamped;
+      if (count < 1) return;
+      const normalized = ((Math.round(index) % count) + count) % count;
+      const current = settleTargetRef.current ?? positionRef.current;
+      const forward = ((normalized - (current % count)) + count) % count;
+      const delta = forward > count / 2 ? forward - count : forward;
+      settleTargetRef.current = current + delta;
       // A direct selection is a new intention. Carry only a small amount of
       // existing energy into the spring so the card never reverses sharply.
       velocityRef.current *= 0.2;
       phaseRef.current = "settling";
       startLoop();
     },
-    [maxIndex, startLoop]
+    [count, startLoop]
   );
 
   const step = useCallback(
     (direction: 1 | -1) => {
       const base = settleTargetRef.current ?? Math.round(positionRef.current);
       if (count < 2) return;
-      const next = ((base + direction) % count + count) % count;
-      goTo(next);
+      goTo(base + direction);
     },
     [count, goTo]
   );
 
-  // If the collection shrinks (admin deactivates a world) under an
-  // out-of-range position, pull it back in bounds.
+  // Keep the unwrapped position when the collection changes; its visible
+  // cards are resolved modulo the new count.
   useEffect(() => {
-    if (positionRef.current > maxIndex) commit(maxIndex);
-  }, [commit, maxIndex]);
+    if (count < 2 && positionRef.current !== 0) commit(0);
+  }, [commit, count]);
 
   useEffect(() => stopLoop, [stopLoop]);
 

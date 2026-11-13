@@ -24,7 +24,9 @@ interface SpatialStageProps {
  */
 export default function SpatialStage({ worlds, orientation, rotation, onEnter, enteringIndex }: SpatialStageProps) {
   const layout = getLayoutConfig(orientation, window.innerWidth, window.innerHeight);
-  const roundedIndex = Math.max(0, Math.min(worlds.length - 1, Math.round(rotation.position)));
+  const roundedIndex = worlds.length
+    ? ((Math.round(rotation.position) % worlds.length) + worlds.length) % worlds.length
+    : 0;
 
   const dragHandlers = useDragInteraction({
     orientation,

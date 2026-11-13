@@ -38,7 +38,9 @@ export default function Home() {
 
   const rotation = useSpatialRotation(worlds.length, physicsConfig);
 
-  const roundedIndex = Math.max(0, Math.min(worlds.length - 1, Math.round(rotation.position)));
+  const roundedIndex = worlds.length
+    ? ((Math.round(rotation.position) % worlds.length) + worlds.length) % worlds.length
+    : 0;
   const focusedWorld = worlds[roundedIndex];
   const [isEntering, setIsEntering] = useState(false);
   const [enteringIndex, setEnteringIndex] = useState<number | null>(null);
